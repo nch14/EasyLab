@@ -65,6 +65,30 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:id="@+id/sure_button_signup"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="32dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="撤销"
+            android:id="@+id/cancel_button_signup"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/sure_button_signup"
+            android:layout_marginEnd="40dp" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>

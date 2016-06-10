@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentContainerAppoint"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    tools:context="com.chenh.easylab.AddAppointmentActivity"
+    android:orientation="vertical">
+
+    <Toolbar
+        android:id="@+id/appointment_toolbar"
+        android:background="?attr/colorPrimary"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" >
+    </Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,7 +39,7 @@
                     android:layout_marginLeft="16dp"
                     android:paddingTop="4dp" />
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/title_make_appoint"
@@ -169,7 +179,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/member_make_appoint" />
+                        android:id="@+id/member_make_appoint"
+                        android:layout_marginRight="16dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -222,35 +233,12 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp" />
 
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/list_default_device" />
-
             </LinearLayout>
 
-            <LinearLayout
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#ffffff"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:text="其他设备"
-                    android:id="@+id/textView5"
-                    android:layout_marginLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:layout_weight="1" />
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/listView2" />
-            </LinearLayout>
+                android:layout_height="256dp"
+                android:id="@+id/list_default_device" />
 
         </LinearLayout>
     </ScrollView>

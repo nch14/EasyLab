@@ -2,11 +2,11 @@ package com.chenh.easylab;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,13 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
-import java.util.UUID;
+import com.chenh.easylab.util.CurrentUser;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +30,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this,"创建预约",Toast.LENGTH_SHORT);
-
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -49,6 +41,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        TextView username= (TextView) headerView.findViewById(R.id.username_entitle);
+        String s=username.getText().toString();
+        username.setText(CurrentUser.getUser().username);
+        TextView name= (TextView) headerView.findViewById(R.id.name_entitle);
+        String ss=name.getText().toString();
+        name.setText(CurrentUser.getUser().name);
 
         FragmentManager fm = getFragmentManager();
         //这里是通过fragmentContainer——此处为CrimeAcitity来获取资源的
@@ -58,11 +57,6 @@ public class MainActivity extends AppCompatActivity
         }
         //创建一个新的fragment事物，加入一个添加操作，然后提交该事物
         fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-    }
-
-    protected Fragment creatFragment() {
-        //UUID crimeID=(UUID)getIntent().getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
-        return SMakeAppointmentFragment.newInstance();
     }
 
     @Override
@@ -110,7 +104,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
                 fragment =SPCenterFragment.newInstance();
         } else if (id == R.id.nav_gallery) {
-                fragment =SMakeAppointmentFragment.newInstance();
+                fragment =SAppointmentFragment.newInstance();
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i=new Intent(MainActivity.this,AddAppointmentActivity.class);
+                        startActivityForResult(i,0);
+                    }
+                });
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_share) {

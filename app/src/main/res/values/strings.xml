@@ -28,10 +28,15 @@
     <string name="fragment_name_title_label">姓名</string>
     <string name="fragment_level_title_ID">内部标识</string>
     <string name="label_choose_appointment_date">请选择日期</string>
-    <string name="label_choose_appointment_time">请选择时间</string>
+    <string name="label_choose_start_appointment_time">请选择开始时间</string>
+    <string name="label_choose_end_appointment_time">请选择结束时间</string>
+
     <string name="label_appointment_team_member">请添加成员</string>
     <string name="label_choose_appointment_room">请选择实验室</string>
-    <string name="label_appointment_room_device">实验桌初始设备</string>
+    <string name="label_appointment_room_device">实验桌设备</string>
 
     <string name="label_dialog_member">请添加成员</string>
+
+
+    <string name="title_fragment_s_appontment">预约信息</string>
 </resources>
