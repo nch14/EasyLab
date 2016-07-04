@@ -17,6 +17,10 @@ public class UserPO implements Serializable {
 
     private int identify;
 
+    private String teams;
+
+    private String appointments;
+
     public int getIdentify() {
         return identify;
     }

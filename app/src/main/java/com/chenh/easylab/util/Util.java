@@ -24,4 +24,16 @@ public class Util {
         String dateStr = dateFormat.format(date);
         return dateStr;
     }
+
+    public static boolean aBeforeB(String a,String b){
+        String[] A=a.split(":");
+        int numA=Integer.parseInt(A[0])*60+Integer.parseInt(A[1]);
+
+        String[] B=b.split(":");
+        int numB=Integer.parseInt(B[0])*60+Integer.parseInt(B[1]);
+
+        if (numA<numB)
+            return true;
+        return false;
+    }
 }

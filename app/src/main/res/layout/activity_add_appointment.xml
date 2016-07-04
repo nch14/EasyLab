@@ -4,20 +4,29 @@
     android:id="@+id/fragmentContainerAppoint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.chenh.easylab.AddAppointmentActivity"
+    tools:context=".view.AddAppointmentActivity"
     android:orientation="vertical">
 
-    <Toolbar
-        android:id="@+id/appointment_toolbar"
-        android:background="?attr/colorPrimary"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" >
-    </Toolbar>
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appointment_toolbar"
+            android:background="?attr/colorPrimary"
+            android:popupTheme="@style/AppTheme.PopupOverlay">
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:fillViewport="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -53,7 +62,7 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:layout_marginTop="8dp">
 
@@ -237,7 +246,7 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="256dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/list_default_device" />
 
         </LinearLayout>

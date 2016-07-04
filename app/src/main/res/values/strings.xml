@@ -39,4 +39,7 @@
 
 
     <string name="title_fragment_s_appontment">预约信息</string>
+    <string name="title_activity_manager">Manager</string>
+    <string name="title_activity_lab_content">LabContentActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

@@ -7,6 +7,12 @@ import java.util.Objects;
  */
 public class ServerBackData {
     private boolean resultState;
+    /**
+     * 如果resultState为false，
+     */
+    private String message;
+
+    private Object object;
 
     public boolean isResultState() {
         return resultState;
@@ -24,5 +30,11 @@ public class ServerBackData {
         this.object = object;
     }
 
-    private Object object;
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
