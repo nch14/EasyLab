@@ -115,11 +115,10 @@ public class LabTableFragment extends LabContentFragment {
                     try {
                         js.put("op","50003");
                         js.put("tableId",desks.get(i));
-                        boolean sendSuccess= Client.getInstance().sendRequest(js);
-                        if (!sendSuccess){
+                        ServerBackData serverBackData= Client.getInstance().sendRequest(js);
+                        if (serverBackData==null){
                             mHandler.sendMessage(mHandler.obtainMessage(0,"网络无法连接"));
                         }else {
-                            ServerBackData serverBackData=Client.getInstance().receiveData();
                             if (!serverBackData.isResultState()){
                                 mHandler.sendMessage(mHandler.obtainMessage(0,"服务器无响应"));
                             }else {

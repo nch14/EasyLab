@@ -1,5 +1,7 @@
 package com.chenh.easylab.vo;
 
+import android.os.Handler;
+
 import com.chenh.easylab.util.Client;
 import com.chenh.easylab.util.ServerBackData;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
  */
 public class LocalDeviceManage {
     ArrayList<DeviceVO> deviceVOs;
+    ArrayList<Handler> mHandles;
 
     private static LocalDeviceManage localDeviceManage;
 
@@ -24,11 +27,16 @@ public class LocalDeviceManage {
 
     private LocalDeviceManage() {
         deviceVOs = new ArrayList<>();
+        mHandles=new ArrayList<>();
         refresher();
     }
 
     public void addDevice(DeviceVO deviceVO){
         deviceVOs.add(deviceVO);
+    }
+
+    public void addHandle(Handler handler){
+        mHandles.add(handler);
     }
 
 
@@ -40,7 +48,7 @@ public class LocalDeviceManage {
                     for (int i=0;i<deviceVOs.size();i++){
                         DeviceVO d=deviceVOs.get(i);
                         JSONObject js=new JSONObject();
-                        boolean sendSuccess;
+                        ServerBackData serverBackData;
                         try {
                             switch (d.type){
                                 case DeviceVO.AIR_CONDITION:
@@ -48,9 +56,8 @@ public class LocalDeviceManage {
                                 case DeviceVO.NORMAL_DEVICE:
                                     js.put("op","3001");
                                     js.put("macAddress",d.macAddress);
-                                    sendSuccess=Client.getInstance().sendRequest(js);
-                                    if (sendSuccess){
-                                        ServerBackData serverBackData=Client.getInstance().receiveData();
+                                    serverBackData=Client.getInstance().sendRequest(js);
+                                    if (serverBackData!=null){
                                         if (!serverBackData.isResultState()){
                                             //Toast.makeText(getActivity(),"服务器无响应",Toast.LENGTH_SHORT).show();
                                         }else {
@@ -62,9 +69,8 @@ public class LocalDeviceManage {
                                 case DeviceVO.AMPEREMETER:
                                     js.put("op","2001");
                                     js.put("macAddress",d.macAddress);
-                                    sendSuccess=Client.getInstance().sendRequest(js);
-                                    if (sendSuccess){
-                                        ServerBackData serverBackData=Client.getInstance().receiveData();
+                                    serverBackData=Client.getInstance().sendRequest(js);
+                                    if (serverBackData!=null){
                                         if (!serverBackData.isResultState()){
                                             //Toast.makeText(getActivity(),"服务器无响应",Toast.LENGTH_SHORT).show();
                                         }else {
@@ -76,9 +82,8 @@ public class LocalDeviceManage {
                                 case DeviceVO.TEMPSENSOR:
                                     js.put("op","5001");
                                     js.put("macAddress",d.macAddress);
-                                    sendSuccess=Client.getInstance().sendRequest(js);
-                                    if (sendSuccess){
-                                        ServerBackData serverBackData=Client.getInstance().receiveData();
+                                    serverBackData=Client.getInstance().sendRequest(js);
+                                    if (serverBackData!=null){
                                         if (!serverBackData.isResultState()){
                                             //Toast.makeText(getActivity(),"服务器无响应",Toast.LENGTH_SHORT).show();
                                         }else {
@@ -92,6 +97,17 @@ public class LocalDeviceManage {
                             e.printStackTrace();
                         }
                     }
+
+                    for (int i=0;i<mHandles.size();i++){
+                        Handler h=mHandles.get(i);
+                        if (h==null){
+                            mHandles.remove(h);
+                            continue;
+                        }else {
+                            h.sendMessage(h.obtainMessage(1,""));
+                        }
+                    }
+
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {

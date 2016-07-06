@@ -387,10 +387,9 @@ public class LoginActivity extends AppCompatActivity {
                        e.printStackTrace();
                    }
                    LocalUser.getInstance().clear();
-                   boolean sendSuccess = Client.getInstance().sendRequest(map);
-                   ServerBackData serverBackData=Client.getInstance().receiveData();
+                   ServerBackData serverBackData=Client.getInstance().sendRequest(map);
                    Message m=null;
-                   if (!sendSuccess){
+                   if (serverBackData ==null){
                        m=handler.obtainMessage(0,"无法连接网络");
                        handler.sendMessage(m);
                        return;

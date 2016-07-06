@@ -43,7 +43,7 @@ public class AddLabDialog extends DialogFragment {
                 }
                 LabVO labVO=new LabVO(input);
 
-                LocalBoolean.getInstance().clear();
+               /* LocalBoolean.getInstance().clear();
                 JSONObject jsonObject=labVO.toJsonObject();
                 try {
                     jsonObject.put("op","40001");
@@ -76,7 +76,7 @@ public class AddLabDialog extends DialogFragment {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
+*/
             }
         }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override

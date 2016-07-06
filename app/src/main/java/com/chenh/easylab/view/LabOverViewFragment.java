@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +20,7 @@ import com.chenh.easylab.util.LocalLabs;
 import com.chenh.easylab.util.ServerBackData;
 import com.chenh.easylab.vo.DeviceVO;
 import com.chenh.easylab.vo.LabVO;
+import com.chenh.easylab.vo.LocalDeviceManage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,8 +135,10 @@ public class LabOverViewFragment extends LabContentFragment {
                 TextView titleTextView= (TextView) convertView.findViewById(R.id.item_name);
                 titleTextView.setText(c.name);
 
-                Switch aSwitch= (Switch) convertView.findViewById(R.id.switch1);
-                aSwitch.setChecked(c.open);
+
+//                Switch mSwitch= (Switch) convertView.findViewById(R.id.state_switch);
+//                mSwitch.setChecked(c.open);
+
             }else if (c.type==DeviceVO.AMPEREMETER){
                 if (convertView==null){
                     convertView=getActivity().getLayoutInflater().inflate(R.layout.list_item_amperemeter,null);
@@ -192,11 +194,10 @@ public class LabOverViewFragment extends LabContentFragment {
                     try {
                         js.put("op","60002");
                         js.put("macAddress",devices.get(i));
-                        boolean sendSuccess= Client.getInstance().sendRequest(js);
-                        if (!sendSuccess){
+                        ServerBackData serverBackData= Client.getInstance().sendRequest(js);
+                        if (serverBackData==null){
                             mHandler.sendMessage(mHandler.obtainMessage(0,"网络无法连接"));
                         }else {
-                            ServerBackData serverBackData=Client.getInstance().receiveData();
                             if (!serverBackData.isResultState()){
                                 mHandler.sendMessage(mHandler.obtainMessage(0,"服务器无响应"));
                             }else {
@@ -208,6 +209,7 @@ public class LabOverViewFragment extends LabContentFragment {
                         e.printStackTrace();
                     }
                 }
+                LocalDeviceManage.getInstance().addHandle(mHandler);
                 mHandler.sendMessage(mHandler.obtainMessage(1,""));
 
 

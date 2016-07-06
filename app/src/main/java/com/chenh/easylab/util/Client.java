@@ -25,7 +25,6 @@ import java.util.Map;
 public class Client {
     public static final String IP_ADDR = "192.168.1.106";//服务器地址  这里要改成服务器的ip   115.159.220.246
     public static final int PORT = 12345;//服务器端口号
-    private Socket socket;
     private static Client client;
     public static Client getInstance(){
         if (client==null)
@@ -51,25 +50,26 @@ public class Client {
      * @param js 数据包
      * @return 是否成功发送
      */
-    public boolean sendRequest(JSONObject js){
+    public ServerBackData sendRequest(JSONObject js){
         String jsonString = "";
         jsonString = js.toString();
         byte[] jsonByte = jsonString.getBytes();
         DataOutputStream outputStream = null;
         try {
-            socket = new Socket(IP_ADDR, PORT);
+            Socket socket = new Socket(IP_ADDR, PORT);
             outputStream = new DataOutputStream(socket.getOutputStream());
             outputStream.write(jsonByte);
             outputStream.flush();
             socket.shutdownOutput();
-            return true;
+            return receiveData(socket);
+
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
-    public ServerBackData receiveData() {
+    private ServerBackData receiveData(Socket socket) {
         DataInputStream inputStream = null;
         String strInputstream = "";
         ServerBackData serverBackData = new ServerBackData();

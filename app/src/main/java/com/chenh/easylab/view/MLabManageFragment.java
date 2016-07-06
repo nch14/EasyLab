@@ -118,11 +118,10 @@ public class MLabManageFragment extends Fragment {
                 try {
                     js.put("op","40003");
                     LocalLabs.getInstance().clear();
-                    boolean sendSuccess=Client.getInstance().sendRequest(js);
-                    if (!sendSuccess){
+                    ServerBackData serverBackData=Client.getInstance().sendRequest(js);
+                    if (serverBackData==null){
                         mHandler.sendMessage(mHandler.obtainMessage(0,"网络无法连接"));
                     }else {
-                        ServerBackData serverBackData=Client.getInstance().receiveData();
                         if (!serverBackData.isResultState()){
                             mHandler.sendMessage(mHandler.obtainMessage(0,"服务器无响应"));
                             //Toast.makeText(getActivity(),"服务器无响应",Toast.LENGTH_SHORT).show();
