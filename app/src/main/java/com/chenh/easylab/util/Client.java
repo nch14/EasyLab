@@ -3,6 +3,7 @@ package com.chenh.easylab.util;
 import android.widget.ListView;
 
 import com.chenh.easylab.vo.DeskVO;
+import com.chenh.easylab.vo.DeviceVO;
 import com.chenh.easylab.vo.LabVO;
 import com.chenh.easylab.vo.UserVO;
 
@@ -22,7 +23,7 @@ import java.util.Map;
  * Created by chenh on 2016/6/10.
  */
 public class Client {
-    public static final String IP_ADDR = "115.159.220.246";//服务器地址  这里要改成服务器的ip
+    public static final String IP_ADDR = "192.168.1.106";//服务器地址  这里要改成服务器的ip   115.159.220.246
     public static final int PORT = 12345;//服务器端口号
     private Socket socket;
     private static Client client;
@@ -33,7 +34,7 @@ public class Client {
     }
 
     private Client(){
-        socket = null;
+        /*socket = null;
         //创建一个流套接字并将其连接到指定主机上的指定端口号
         try {
             socket = new Socket(IP_ADDR, PORT);
@@ -42,7 +43,7 @@ public class Client {
             t.start();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -56,11 +57,10 @@ public class Client {
         byte[] jsonByte = jsonString.getBytes();
         DataOutputStream outputStream = null;
         try {
+            socket = new Socket(IP_ADDR, PORT);
             outputStream = new DataOutputStream(socket.getOutputStream());
-            System.out.println("发的数据长度为:"+jsonByte.length);
             outputStream.write(jsonByte);
             outputStream.flush();
-            System.out.println("传输数据完毕");
             socket.shutdownOutput();
             return true;
         } catch (IOException e) {
@@ -69,19 +69,25 @@ public class Client {
         }
     }
 
-    public void receiveData(JSONObject js){
-        boolean success= false;
-        ServerBackData serverBackData=new ServerBackData();
+    public ServerBackData receiveData() {
+        DataInputStream inputStream = null;
+        String strInputstream = "";
+        ServerBackData serverBackData = new ServerBackData();
         try {
-            success = (((String) js.get("isSuccess")).equals("success"));
-            if (success){
+            inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+            strInputstream = inputStream.readUTF();
+            JSONObject js = new JSONObject(strInputstream);
+
+            boolean success = (((String) js.get("isSuccess")).equals("success"));
+            if (success) {
                 serverBackData.setResultState(true);
-                int rp=Integer.parseInt(js.getString("rp"));
-                switch (rp){
+                int rp = Integer.parseInt(js.getString("rp"));
+                switch (rp) {
                     case 0://返回类型为booleean
                         break;
                     case 1://返回类型为user
                         LocalUser.writeInstance(js);
+                        serverBackData.setObject(LocalUser.getInstance().getUser());
                         break;
                     case 2://返回类型为Appointment
 
@@ -90,34 +96,52 @@ public class Client {
 
                         break;
                     case 21://响应是否成功
-                        serverBackData.setMessage(js.getString("message"));
+                        LocalBoolean.writeInstance(true);
                         break;
                     case 2101://电流表示数
                         LocalAmperemeters.writeInstance(js);
+                        serverBackData.setObject(js.getDouble("value"));
                         break;
                     case 3101://电源状态
                         LocalPowers.writeInstance(js);
+                        serverBackData.setObject(js.getBoolean("state"));
+                        break;
+                    case 5101://温度传感器示数
                         break;
                     case 41003://返回当前所有实验室
                         LocalLabs.writeInstance(js);
+                        serverBackData.setObject(LocalLabs.getInstance().getLabs());
                         break;
                     case 51003://返回一张desk
                         LocalDesks.writeInstance(js);
+                        serverBackData.setObject(new DeskVO(js));
                         break;
-
+                    case 61002://返回一个Device
+                        serverBackData.setObject(new DeviceVO(js));
+                        break;
                 }
-            }else {
+            } else {
                 serverBackData.setResultState(false);
-                int rp=Integer.parseInt(js.getString("rp"));
-                switch (rp){
+                int rp = Integer.parseInt(js.getString("rp"));
+                switch (rp) {
                     case 21://响应是否成功
-                        serverBackData.setMessage(js.getString("message"));
+                        LocalBoolean.writeInstance(false);
                         break;
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return serverBackData;
+
     }
 
     /**
@@ -240,24 +264,30 @@ public class Client {
 
     /**
      * 监听服务器端是否有消息返回。如果有、就启动receiveData方法解析数据
-     */
+     *//*
     class Listener implements Runnable{
         @Override
         public void run() {
             while (true){
+                DataInputStream inputStream = null;
+                String strInputstream ="";
                 try {
-                    DataInputStream inputStream = null;
-                    String strInputstream ="";
                     inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+*//*                    if (inputStream==null)
+                        continue;*//*
                     strInputstream=inputStream.readUTF();
                     JSONObject js = new JSONObject(strInputstream);
                     receiveData(js);
+
+                    Thread.sleep(100);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }
-    }
+    }*/
 }

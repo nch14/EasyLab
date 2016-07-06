@@ -37,6 +37,9 @@ public class LabContentFragment extends Fragment {
                 fragment = new LabOverViewFragment();
                 break;
             case 2:
+                fragment = new LabFlowFragment();
+                break;
+            case 3:
                 fragment = new LabTableFragment();
                 break;
             default:

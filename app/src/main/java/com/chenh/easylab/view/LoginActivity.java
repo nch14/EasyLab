@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.chenh.easylab.R;
 import com.chenh.easylab.util.Client;
 import com.chenh.easylab.util.CurrentUser;
+import com.chenh.easylab.util.LocalUser;
 import com.chenh.easylab.util.ServerBackData;
 import com.chenh.easylab.vo.UserVO;
 
@@ -385,7 +386,34 @@ public class LoginActivity extends AppCompatActivity {
                    } catch (JSONException e) {
                        e.printStackTrace();
                    }
-                   ServerBackData serverBackData= Client.register(map);
+                   LocalUser.getInstance().clear();
+                   boolean sendSuccess = Client.getInstance().sendRequest(map);
+                   ServerBackData serverBackData=Client.getInstance().receiveData();
+                   Message m=null;
+                   if (!sendSuccess){
+                       m=handler.obtainMessage(0,"无法连接网络");
+                       handler.sendMessage(m);
+                       return;
+                   }else {
+                       if (!serverBackData.isResultState()){
+                           m=handler.obtainMessage(0,"用户名不存在");
+                       }else {
+                           UserVO user=LocalUser.getInstance().getUser();
+                           if (user.password.equals(password)){
+                               if (user.identify.equals("学生"))
+                                   m=handler.obtainMessage(0,"manager");
+                               //m=handler.obtainMessage(0,"student");
+                               if (user.identify.equals("管理员"))
+                                   m=handler.obtainMessage(0,"manager");
+                           }else {
+                               m=handler.obtainMessage(0,"密码错误");
+                           }
+                       }
+                       handler.sendMessage(m);
+
+                   }
+
+                   /*ServerBackData serverBackData= Client.register(map);
 
                    Message m=null;
                    if (serverBackData.isResultState()){
@@ -406,7 +434,7 @@ public class LoginActivity extends AppCompatActivity {
                        m=handler.obtainMessage(0,"该用户不存在");
                        //Toast.makeText(LoginActivity.this, "该用户不存在", Toast.LENGTH_SHORT).show();
                    }
-                   handler.sendMessage(m);
+                   handler.sendMessage(m);*/
                }
            }).start();
         }

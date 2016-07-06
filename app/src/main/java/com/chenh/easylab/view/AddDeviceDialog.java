@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class AddDeviceDialog extends DialogFragment {
     private ArrayAdapter spinnerAdapter;
-    private String[] items=new String[]{"电闸","电流表","空调"};
+    private String[] items=new String[]{"电闸","电流表","空调","温度传感器"};
     private ArrayList<String> spinners;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

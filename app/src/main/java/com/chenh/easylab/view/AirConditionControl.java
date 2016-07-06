@@ -1,14 +1,12 @@
 package com.chenh.easylab.view;
 
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +16,9 @@ public class AirConditionControl extends AppCompatActivity {
     private TextView mTemperature;
     private TextView mModel;
     private ImageView mArrow;
+    private Switch mSwitch;
+
+    private ImageView mStudyArrow;
     private static final String NUMBER="number";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,13 @@ public class AirConditionControl extends AppCompatActivity {
 
         mArrow= (ImageView) findViewById(R.id.arrow);
         mArrow.setOnClickListener(new InnerOnClickListener());
+
+        mStudyArrow=(ImageView)findViewById(R.id.study_arrow);
+        mStudyArrow.setOnClickListener(new InnerOnClickListener());
+
+        mSwitch=(Switch)findViewById(R.id.air_switch);
+        mSwitch.setOnClickListener(new InnerOnClickListener());
+
     }
 
 
@@ -59,16 +67,26 @@ public class AirConditionControl extends AppCompatActivity {
             int id=v.getId();
             switch (id){
                 case R.id.arrow:
-                    FragmentManager fm=getFragmentManager();
-                    TemperatureSelectorFragment dialog= TemperatureSelectorFragment.newInstance(mTemperature);
-                    dialog.show(fm,NUMBER);
+                    if (mSwitch.isEnabled()){
+                        FragmentManager fm=getFragmentManager();
+                        TemperatureSelectorFragment dialog= TemperatureSelectorFragment.newInstance(mTemperature);
+                        dialog.show(fm,NUMBER);
+                    }
                     break;
                 case R.id.model:
-                    if(mModel.getText().toString().equals("制冷")){
-                        mModel.setText("制热");
-                    }else {
-                        mModel.setText("制冷");
+                    if(mSwitch.isEnabled()){
+                        if(mModel.getText().toString().equals("制冷")){
+                            mModel.setText("制热");
+                        }else {
+                            mModel.setText("制冷");
+                        }
                     }
+                    break;
+                case R.id.study_arrow:
+                    Toast.makeText(AirConditionControl.this,"学习指令已经送出",Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.air_switch:
+
                     break;
             }
         }

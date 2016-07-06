@@ -27,4 +27,8 @@ public class LocalUser {
             localUser =new LocalUser();
         localUser.user=new UserVO(js);
     }
+
+    public UserVO getUser(){
+        return user;
+    }
 }

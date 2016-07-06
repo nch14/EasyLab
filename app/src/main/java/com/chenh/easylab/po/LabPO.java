@@ -1,4 +1,4 @@
-package com.chenh.easylab.vo;
+package com.chenh.easylab.po;
 
 import java.util.ArrayList;
 

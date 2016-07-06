@@ -10,11 +10,17 @@ public class DeviceVO {
     public final static int NORMAL_DEVICE=1;
     public final static int AIR_CONDITION=2;
     public final static int AMPEREMETER=3;
+    public final static int TEMPSENSOR=4;
 
 
     public String macAddress;
     public String name;
     public int type;
+
+    //--------------------------临时字段------------------------------
+    public boolean open;
+    public double value;
+    //----------------------------------------------------------------
 
     public DeviceVO(){}
 
@@ -29,6 +35,7 @@ public class DeviceVO {
             this.macAddress=device.getString("macAddress");
             this.name=device.getString("name");
             this.type=device.getInt("type");
+            LocalDeviceManage.getInstance().addDevice(this);
         } catch (JSONException e) {
             e.printStackTrace();
         }

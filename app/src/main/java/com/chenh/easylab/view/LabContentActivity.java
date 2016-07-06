@@ -87,6 +87,7 @@ public class LabContentActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position==0){
+                    fab.show();
                     fab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -95,7 +96,8 @@ public class LabContentActivity extends AppCompatActivity {
                             dialog.show(fm,ADD_DEVICE);
                         }
                     });
-                }else {
+                }else if(position==2) {
+                    fab.show();
                     fab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -104,6 +106,8 @@ public class LabContentActivity extends AppCompatActivity {
                             dialog.show(fm,ADD_TABLE);
                         }
                     });
+                }else {
+                    fab.hide();
                 }
             }
 
@@ -166,15 +170,17 @@ public class LabContentActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 2 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "实验室现状";
+                    return "实验室设备";
                 case 1:
+                    return "人员流动";
+                case 2:
                     return "实验桌";
             }
             return null;

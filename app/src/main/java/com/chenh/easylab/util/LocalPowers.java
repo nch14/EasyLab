@@ -30,7 +30,7 @@ public class LocalPowers {
             localPowers =new LocalPowers();
         try {
             String key=js.getString("key");
-            Boolean value=js.getBoolean("value");
+            Boolean value=js.getBoolean("state");
             localPowers.powers.put(key,value);
         } catch (JSONException e) {
             e.printStackTrace();

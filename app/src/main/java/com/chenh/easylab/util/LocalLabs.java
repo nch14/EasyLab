@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class LocalLabs {
     ArrayList<LabVO> labs;
+    int postion;
 
     private static LocalLabs localLabs;
     public static LocalLabs getInstance(){
@@ -24,7 +25,8 @@ public class LocalLabs {
      * 在发送请求前、应该清除旧的labs记录
      */
     public void clear(){
-        labs.clear();
+        if (labs!=null)
+            labs=null;
     }
 
     public static void writeInstance(JSONObject js){
@@ -35,15 +37,25 @@ public class LocalLabs {
         try {
             num = js.getInt("num");
             for (int i=0;i<num;i++){
-                localLabs.labs.add(new LabVO(js.getJSONObject("item"+i)));
+                localLabs.labs.add(new LabVO(new JSONObject(js.getString("item"+i))));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
-    private LocalLabs(){
-        labs=new ArrayList<>();
+
+
+    public void setPostion(int postion){
+        this.postion=postion;
+    }
+
+    public int getPostion() {
+        return postion;
+    }
+
+    public ArrayList<LabVO> getLabs(){
+        return labs;
     }
 
 }

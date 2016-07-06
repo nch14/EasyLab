@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class LabVO {
 
     public String roomId;
-    public ArrayList<DeviceVO> devices;
-    public ArrayList<DeskVO> desks;
+    public ArrayList<String> devices;
+    public ArrayList<String> desks;
 
     public LabVO(){}
 
@@ -21,22 +21,21 @@ public class LabVO {
         devices=new ArrayList<>();
         desks=new ArrayList<>();
     }
-
     public LabVO(JSONObject lab){
         try {
             this.roomId=lab.getString("roomId");
-            JSONObject devices=lab.getJSONObject("devices");
+            JSONObject devices=new JSONObject(lab.getString("devices"));
             this.devices=new ArrayList<>();
             int num1=devices.getInt("num");
             for (int i=0;i<num1;i++){
-                this.devices.add(new DeviceVO(devices.getJSONObject("item"+i)));
+                this.devices.add(devices.getString("item"+i));
             }
 
-            JSONObject desks=lab.getJSONObject("desks");
+            JSONObject desks=new JSONObject(lab.getString("desks"));
             this.desks=new ArrayList<>();
-            int num2=devices.getInt("num");
+            int num2=desks.getInt("num");
             for (int i=0;i<num2;i++){
-                this.desks.add(new DeskVO(desks.getJSONObject("item"+i)));
+                this.desks.add(desks.getString("item"+i));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -51,16 +50,16 @@ public class LabVO {
             JSONObject devices=new JSONObject();
             devices.put("num",this.devices.size());
             for (int i=0;i<this.devices.size();i++){
-                devices.put("item"+i,this.devices.get(i).toJsonObject());
+                devices.put("item"+i,this.devices.get(i));
             }
-            lab.put("devices",devices);
+            lab.put("devices",devices.toString());
 
             JSONObject desks=new JSONObject();
             desks.put("num",this.desks.size());
             for (int i=0;i<this.desks.size();i++){
-                desks.put("item"+i,this.desks.get(i).toJsonObject());
+                desks.put("item"+i,this.desks.get(i));
             }
-            lab.put("desks",desks);
+            lab.put("desks",desks.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

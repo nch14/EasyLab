@@ -11,16 +11,17 @@ import java.util.ArrayList;
 public class DeskVO {
 
     public String tableId;
-    public ArrayList<DeviceVO> devices;
+    public ArrayList<String> devices;
 
+    public DeskVO(){}
     public DeskVO(JSONObject desk){
         try {
             this.tableId=desk.getString("tableId");
-            JSONObject devices=desk.getJSONObject("devices");
+            JSONObject devices=new JSONObject(desk.getString("devices"));
             this.devices=new ArrayList<>();
             int num1=devices.getInt("num");
             for (int i=0;i<num1;i++){
-                this.devices.add(new DeviceVO(devices.getJSONObject("item"+i)));
+                this.devices.add(devices.getString("item"+i));
             }
 
         } catch (JSONException e) {
@@ -35,9 +36,9 @@ public class DeskVO {
             JSONObject devices=new JSONObject();
             devices.put("num",this.devices.size());
             for (int i=0;i<this.devices.size();i++){
-                devices.put("item"+i,this.devices.get(i).toJsonObject());
+                devices.put("item"+i,this.devices.get(i));
             }
-            desk.put("devices",devices);
+            desk.put("devices",devices.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
